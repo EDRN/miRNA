@@ -1,5 +1,5 @@
 # #!/usr/bin/env Rscript
-# setwd("/fullpath/Curated_for_MS_2")
+setwd("/data/shiny-server/srv/shiny-server/miRNA")
 # args = commandArgs(TRUE)
 # 
 # if (length(args)<10) {
@@ -36,19 +36,19 @@ library(ROCR)
 library(data.table)
 
 # Load external functions
-source("LowerLimit.R")
-source("TargetPlot.R")
-source("TargetBias.R")
+source("/data/shiny-server/srv/shiny-server/miRNA/LowerLimit.R")
+source("/data/shiny-server/srv/shiny-server/miRNA/TargetPlot.R")
+source("/data/shiny-server/srv/shiny-server/miRNA/TargetBias.R")
 
 # Import specific files by Sample#
-Lab_df <- read.delim(paste(Site,"_",Protocol,"_",Sample,".txt",sep=""))
+Lab_df <- read.delim(paste("/data/shiny-server/srv/shiny-server/miRNA/",Site,"_",Protocol,"_",Sample,".txt",sep=""))
 # Lab_df <- read.csv(paste(Site,"_",Protocol,"_",Sample,".csv",sep=""))
 
 # Import Sample Key
-Sample_Key <- read.delim(paste(Sample,"_Key",".txt",sep=""))
+Sample_Key <- read.delim(paste("/data/shiny-server/srv/shiny-server/miRNA/",Sample,"_Key",".txt",sep=""))
 
 # Import annotation files
-miRbase21_mature_wHC <- read.delim("miRbase21_human_mature_wHC.txt")
+miRbase21_mature_wHC <- read.delim("/data/shiny-server/srv/shiny-server/miRNA/miRbase21_human_mature_wHC.txt")
 
 # Library Size Normalize if Count Data (skip if PCR)
 if(max(Lab_df[2:16], na.rm=TRUE) >= 50){
@@ -424,7 +424,7 @@ g3 <- arrangeGrob(DFPrPlot, DFPrBoxPlot,     ncol=2, nrow=1, widths=c(2, 1))
 
 g <- grid.arrange(g0, g1, g2, g3, ncol=1, nrow=4)
 
-ggsave(file=paste(Site,"_",Protocol,"_",Sample,".pdf", sep=""), g, width = 7.5, height = 10)
+ggsave(file=paste("/data/shiny-server/srv/shiny-server/miRNA/",Site,"_",Protocol,"_",Sample,".pdf", sep=""), g, width = 7.5, height = 10)
 
 }
 ###########################
