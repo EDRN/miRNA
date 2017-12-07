@@ -3,26 +3,7 @@ library(shiny)
 ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
-      selectInput("site", "Choose a Site:",
-                  c("Lab008 (using NGS)"="Lab008",
-                    "Lab007 (using NGS)"="Lab007",
-                    "Lab006 (using NGS)"="Lab006",
-                    "Lab005 (using HYB)"="Lab005",
-                    "Lab004 (using PCR)"="Lab004"
-                    )),
-      selectInput("protocol", "Choose a Protocol:",
-                  c("NGS004 (Lab008 only)"="NGS004",
-                    "NGS003 (Lab007 only)"="NGS003",
-                    "NGS002 (Lab006 2nd platform)"="NGS002",
-                    "NGS001 (Lab006 1st platform)"="NGS001",
-                    "HYB001 (Lab005 only)"="HYB001",
-                    "PCR004 (Lab004 only)"="PCR004"
-                    )),
-      selectInput("sample", "Choose a Sample:",
-                  c("NIST05 (except NGS001)"="NIST05",
-                    "NIST04 (all protoocols)"="NIST04",
-                    "NIST03 (all protoocols)"="NIST03"
-                    )),
+      fileInput("dataset", "Choose a Benchmarking Dataset (Site_Protocol_Samples.txt)", multiple = TRUE, accept = "text/csv"),
       sliderInput(inputId = "TSI_Pl",
                   label = "Tissue-Selectivity for Placenta",
                   value = 10, min = 1, max = 10, step = 1),
@@ -51,11 +32,11 @@ ui <- fluidPage(
 server <- function(input, output) {
   output$DB6plot <- renderPlot({
     
-    source("DBforShiny.R")
+    req(input$dataset)
     
-    ShinyDB6P(input$site,
-              input$protocol,
-              input$sample,
+    source("Supporting_files/DashboardView.R")
+    
+    ShinyDB6P(input$dataset,
               input$TSI_Br,
               input$TSI_Lv,
               input$TSI_Pl,
@@ -67,4 +48,3 @@ server <- function(input, output) {
 }
 
 shinyApp(ui = ui, server = server)
-
