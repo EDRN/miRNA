@@ -3,7 +3,7 @@ library(shiny)
 ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
-      fileInput("dataset", "Choose a Benchmarking Dataset (Site_Protocol_Samples.txt)", multiple = TRUE, accept = "text/csv"),
+      fileInput("dataset", "Choose a Benchmarking Dataset (Site_Protocol_Samples.txt)", multiple = TRUE, accept = "txt/csv"),
       sliderInput(inputId = "TSI_Pl",
                   label = "Tissue-Selectivity for Placenta",
                   value = 10, min = 1, max = 10, step = 1),
